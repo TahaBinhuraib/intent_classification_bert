@@ -43,7 +43,7 @@ EPOCHS = 8
 LEARNING_RATE = 1e-05
 tokenizer = BertTokenizer.from_pretrained('dbmdz/bert-base-turkish-cased')
 
-class DepremDataset(Dataset):
+class IntentDataset(Dataset):
 
     def __init__(self, dataframe, tokenizer, max_len):
         self.tokenizer = tokenizer
@@ -77,8 +77,8 @@ class DepremDataset(Dataset):
           'token_type_ids': torch.tensor(token_type_ids, dtype=torch.long),
           'labels': torch.FloatTensor(labels)
       }
-training_data = DepremDataset(df_train, tokenizer, max_len=MAX_LEN)
-test_data = DepremDataset(df_test, tokenizer, max_len=MAX_LEN)
+training_data = IntentDataset(df_train, tokenizer, max_len=MAX_LEN)
+test_data = IntentDataset(df_test, tokenizer, max_len=MAX_LEN)
 train_params = {'batch_size': 8,
                 'shuffle': True,
                 'num_workers': 2
@@ -132,7 +132,7 @@ def train(epoch):
         loss.backward()
         optimizer.step()
 
-print('trainign started')
+print('training started')
 for epoch in range(EPOCHS):
     train(epoch)
 
